@@ -12,8 +12,8 @@
 -----------------------------------------------------------------------------
 
 module System.Log.TH (
-	module System.Log.TH,
-	module X
+       module System.Log.TH,
+       module X
 )where
 
 import System.Log.Level           as X
@@ -69,12 +69,12 @@ alert    = mkLog alertN
 panic    = mkLog panicN
 
 mkLog eName msg = do
-	d <- mkBaseData
-	return $ AppE (AppE (AppE logN d) eName) (LitE $ StringL msg)
+       d <- mkBaseData
+       return $ AppE (AppE (AppE logN d) eName) (LitE $ StringL msg)
 
 mkBaseData = do
-	loc <- getLoc
-	return $ AppE (AppE (AppE appDataN locN) loc) emptyN
+       loc <- getLoc
+       return $ AppE (AppE (AppE appDataN locN) loc) emptyN
 
 --debug     = simpleLog Debug
 --info      = simpleLog Info

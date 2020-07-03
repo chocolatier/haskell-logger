@@ -36,7 +36,7 @@ type instance LogFormat (BaseLoggerT l m) = l
 
 
 instance (Applicative m, Monad m) => MonadLogger (BaseLoggerT l m) where
-	appendLog _ = return ()
+    appendLog _ = return ()
 
 instance MonadTrans (BaseLoggerT l) where
     lift = BaseLoggerT

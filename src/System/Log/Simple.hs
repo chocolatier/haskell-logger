@@ -11,8 +11,8 @@
 -----------------------------------------------------------------------------
 
 module System.Log.Simple (
-	module System.Log.Simple,
-	module X
+    module System.Log.Simple,
+    module X
 ) where
 
 import System.Log.Level           as X
