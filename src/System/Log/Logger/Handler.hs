@@ -25,7 +25,6 @@ import           Control.Lens                  hiding (children)
 import           System.Log.Log                (Log, MonadLogger(appendLog), LogFormat, LogFormat)
 import           Control.Monad.Trans           (MonadTrans, lift)
 import           Control.Monad.Trans.Except
-import           Control.Monad.Trans.List
 import           Control.Monad.Trans.Maybe
 import           Control.Monad.Trans.Reader
 import           Control.Monad.Trans.RWS
@@ -49,7 +48,6 @@ class MonadLoggerHandler n m | m -> n where
     addHandler = addHandler
 
 instance (Monad m, MonadLoggerHandler n m) => MonadLoggerHandler n (ExceptT e m)
-instance (Monad m, MonadLoggerHandler n m) => MonadLoggerHandler n (ListT m)
 instance (Monad m, MonadLoggerHandler n m) => MonadLoggerHandler n (MaybeT m)
 instance (Monad m, MonadLoggerHandler n m) => MonadLoggerHandler n (ReaderT r m)
 instance (Monad m, Monoid w, MonadLoggerHandler n m) => MonadLoggerHandler n (RWST r w s m)

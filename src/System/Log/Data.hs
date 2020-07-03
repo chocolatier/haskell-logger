@@ -29,7 +29,6 @@ import Data.Time.Clock        (getCurrentTime, UTCTime)
 import Control.Lens
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
-import Control.Monad.Trans.List
 import Control.Monad.Trans.Maybe
 import Control.Monad.Trans.Reader
 import Control.Monad.Trans.RWS
@@ -70,9 +69,6 @@ class MonadRecord d m where
         appendLog l
 
 instance (Monad m, MonadRecord d m) => MonadRecord d (ExceptT e m) where
-    appendRecord = lift . appendRecord
-
-instance (Monad m, MonadRecord d m) => MonadRecord d (ListT m) where
     appendRecord = lift . appendRecord
 
 instance (Monad m, MonadRecord d m) => MonadRecord d (MaybeT m) where
@@ -124,11 +120,11 @@ buildLog = buildLogProto
 
 -- === Instances ===
 
-instance (LogBuilderProto xs m ys, Functor m) => LogBuilderProto (Data x,xs) m (Data x,ys) where
+instance {-# OVERLAPPABLE #-} (LogBuilderProto xs m ys, Functor m) => LogBuilderProto (Data x,xs) m (Data x,ys) where
     buildLogProto b = (fmap.fmap) (x,) $ buildLogProto $ RecordBuilder xs where
         (x,xs) = fromRecordBuilder b
 
-instance (LogBuilderProto (Data x,xs) m ys, LogBuilderProto xs m (Data y,()), Monad m) => LogBuilderProto (Data x,xs) m (Data y,ys) where
+instance {-# OVERLAPPABLE #-} (LogBuilderProto (Data x,xs) m ys, LogBuilderProto xs m (Data y,()), Monad m) => LogBuilderProto (Data x,xs) m (Data y,ys) where
     buildLogProto b = do
         let (x,xs) = fromRecordBuilder b
         Log ys     <- buildLogProto b
@@ -154,10 +150,10 @@ readData a = recData . lookup a
 
 -- === Instances ===
 
-instance LookupDataSet base l => Lookup base (Log l) where
+instance {-# OVERLAPPABLE #-} LookupDataSet base l => Lookup base (Log l) where
     lookup b (fromLog -> s) = lookupDataSet b s
 
-instance LookupDataSet base r => Lookup base (RecordBuilder r) where
+instance {-# OVERLAPPABLE #-} LookupDataSet base r => Lookup base (RecordBuilder r) where
     lookup b (fromRecordBuilder -> r) = lookupDataSet b r
 
 ---
@@ -165,10 +161,10 @@ instance LookupDataSet base r => Lookup base (RecordBuilder r) where
 class LookupDataSet base s where
     lookupDataSet :: base -> s -> Data base
 
-instance LookupDataSet base (Data base,as) where
+instance {-# OVERLAPPABLE #-} LookupDataSet base (Data base,as) where
     lookupDataSet _ (a,_) = a
 
-instance LookupDataSet base as => LookupDataSet base (Data b,as) where
+instance {-# OVERLAPPABLE #-} LookupDataSet base as => LookupDataSet base (Data b,as) where
     lookupDataSet b (_, as) = lookupDataSet b as
 
 
