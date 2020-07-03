@@ -1,6 +1,5 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE OverlappingInstances #-}
 {-# LANGUAGE TypeFamilies #-}
 
 -----------------------------------------------------------------------------
@@ -53,10 +52,10 @@ concatFormatters (Formatter f) (Formatter g) = Formatter (\s -> f s <> g s)
 
 -- === Instances ===
 
-instance (PPrint (DataOf seg), Lookup seg (Log a)) => FormatterBuilder seg a where
+instance {-# OVERLAPPABLE #-} (PPrint (DataOf seg), Lookup seg (Log a)) => FormatterBuilder seg a where
     buildFormatter a = Formatter $ pprint . readData a
 
-instance (a~b) => FormatterBuilder (Formatter a) b where
+instance {-# OVERLAPPABLE #-} (a~b) => FormatterBuilder (Formatter a) b where
     buildFormatter = id
 
 instance FormatterBuilder String a where
@@ -72,10 +71,10 @@ instance FormatterBuilder Doc a where
 class PPrint a where
     pprint :: a -> Doc
 
-instance PPrint String where
+instance {-# OVERLAPPABLE #-} PPrint String where
     pprint = text
 
-instance Pretty a => PPrint a where
+instance {-# OVERLAPPABLE #-} Pretty a => PPrint a where
     pprint = pretty
 
 instance Pretty LevelData where
