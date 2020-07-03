@@ -1,8 +1,10 @@
--- This file has been generated from package.yaml by hpack version 0.20.0.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5738b550b5db5c70a81df34e4fb127b1c7e8db502b57700135b0bc2f1d6803cf
+-- hash: 6ae048643e98e545415e3a19c29554a917b6862a9ebb3f718f40a832ea2ef06e
 
 name:           logger
 version:        0.1.1.0
@@ -25,8 +27,6 @@ license:        Apache-2.0
 license-file:   LICENSE
 tested-with:    ghc ==8.2.2
 build-type:     Simple
-cabal-version:  >= 1.10
-
 extra-source-files:
     README.md
 
