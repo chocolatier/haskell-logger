@@ -5,7 +5,6 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE TupleSections #-}
-{-# LANGUAGE OverlappingInstances #-}
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 
